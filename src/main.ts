@@ -27,11 +27,10 @@ function markCurrentWordPlugin() {
         let word = view.state.wordAt(view.state.selection.main.from);
         let wordText = word && view.state.doc.sliceString(word.from, word.to);
         if (!wordText || wordText.length < 3) return;
-        console.log("\b" + wordText + "\b");
         return new MatchDecorator({
           regexp: new RegExp("\\b" + wordText + "\\b", "g"),
           decoration: () => {
-            return Decoration.mark({ class: "cm-current-word" });
+            return Decoration.mark({ class: "cm-current-word", attributes: {"data-current-word": wordText} });
           },
         });
       }
