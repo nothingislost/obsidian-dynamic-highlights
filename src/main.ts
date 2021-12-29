@@ -173,7 +173,8 @@ class SettingTab extends PluginSettingTab {
     new Setting(containerEl)
       .setName("Ignored words")
       .setDesc("A comma delimted list of words that will not be highlighted")
-      .addText(text => {
+      .addTextArea(text => {
+        text.inputEl.addClass("ignored-words-input");
         text.setValue(this.plugin.settings.ignoreWords).onChange(async value => {
           this.plugin.settings.ignoreWords = value;
           await this.plugin.saveSettings();
