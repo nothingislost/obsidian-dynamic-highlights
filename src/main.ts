@@ -96,8 +96,8 @@ function markCurrentWordPlugin(plugin: HighlightCurrentTextPlugin) {
           // otherwise, highlight the current word under the cursor
           searchString = word && view.state.doc.sliceString(word.from, word.to);
         }
-        let ignoreWords = new Set(plugin.settings.ignoreWords.split(",").map(w => w.trim()));
-        if (ignoreWords.has(searchString)) return null;
+        let ignoreWords = new Set(plugin.settings.ignoreWords.split(",").map(w => w.toLowerCase().trim()));
+        if (ignoreWords.has(searchString.toLowerCase())) return null;
         return { value: searchString, type: selection.empty ? "word" : "string", range: { from, to } };
       }
 
