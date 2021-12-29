@@ -11,6 +11,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@codemirror/autocomplete": "^0.19.9",
     "@codemirror/commands": "^0.19.0",
     "@codemirror/fold": "0.19.0",
     "@codemirror/highlight": "^0.19.0",
@@ -23,15 +24,18 @@
     "@codemirror/state": "^0.19.0",
     "@codemirror/stream-parser": "https://github.com/lishid/stream-parser",
     "@codemirror/view": "^0.19.0",
-		"@codemirror/autocomplete": "^0.19.9",
     "@types/node": "^16.11.6",
     "@typescript-eslint/eslint-plugin": "^5.2.0",
     "@typescript-eslint/parser": "^5.2.0",
     "builtin-modules": "^3.2.0",
     "esbuild": "0.13.12",
+    "monkey-around": "^2.2.0",
     "obsidian": "^0.13.8",
     "tslib": "2.3.1",
-    "typescript": "4.4.4",
-    "monkey-around": "^2.2.0"
+    "typescript": "4.4.4"
+  },
+  "dependencies": {
+    "@types/xregexp": "^4.4.0",
+    "xregexp": "^5.1.0"
   }
 }
