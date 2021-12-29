@@ -6,8 +6,6 @@ An experimental Obsidian plugin that highlights all occurrences of the word unde
 
 Only words with 3 characters or more will be highlighted
 
-Substrings will be matched so putting your cursor on the word "the" will highlight "toge`the`r", "`the`re" etc
-
 ### Installing via BRAT
 
 Install the BRAT plugin via the Obsidian Plugin Browser and then add the beta repository "nothingislost/obsidian-..."
