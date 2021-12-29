@@ -26,7 +26,6 @@ function markCurrentWordPlugin() {
       makeDecorator(view: EditorView) {
         let word = view.state.wordAt(view.state.selection.main.from);
         let wordText = word && view.state.doc.sliceString(word.from, word.to);
-        console.log(wordText);
         if (!wordText || wordText.length < 3) return;
         return new MatchDecorator({
           regexp: new RegExp(wordText, "g"),
