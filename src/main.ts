@@ -11,10 +11,14 @@ interface SearchConfig {
 interface HighlightCurrentTextSettings {
   delay: number;
   ignoreWords: string;
+  markSelection: boolean;
+  selectionRespectsIgnore: boolean;
 }
 
 const DEFAULT_SETTINGS: HighlightCurrentTextSettings = {
   delay: 0,
+  markSelection: true,
+  selectionRespectsIgnore: true,
   ignoreWords:
     "myself, our, ours, ourselves, you, your, yours, yourself, yourselves, him, his, himself, she, her, hers, herself, its, itself, they, them, their, theirs, themselves, what, which, who, whom, this, that, these, those, are, was, were, been, being, have, has, had, having, does, did, doing, the, and, but, because, until, while, for, with, about, against, between, into, through, during, before, after, above, below, from, down, out, off, over, under, again, further, then, once, here, there, when, where, why, how, all, any, both, each, few, more, most, other, some, such, nor, not, only, own, same, than, too, very, can, will, just, don, should,now",
 };
@@ -76,7 +80,7 @@ function markCurrentWordPlugin(plugin: HighlightCurrentTextPlugin) {
           decoration: () => {
             return Decoration.mark({
               class: `cm-matched-${search.type}`,
-              attributes: { [`data-current-${search.type}`]: search.value },
+              attributes: { [`data-matched-${search.type}`]: search.value },
             });
           },
         });
@@ -96,22 +100,29 @@ function markCurrentWordPlugin(plugin: HighlightCurrentTextPlugin) {
           // otherwise, highlight the current word under the cursor
           searchString = word && view.state.doc.sliceString(word.from, word.to);
         }
-        let ignoreWords = new Set(plugin.settings.ignoreWords.split(",").map(w => w.toLowerCase().trim()));
-        if (ignoreWords.has(searchString.toLowerCase())) return null;
+        if (selection.empty || plugin.settings.selectionRespectsIgnore) {
+          let ignoreWords = new Set(plugin.settings.ignoreWords.split(",").map(w => w.toLowerCase().trim()));
+          if (ignoreWords.has(searchString.toLowerCase())) return null;
+        }
         return { value: searchString, type: selection.empty ? "word" : "string", range: { from, to } };
       }
 
       applyHighlight = (update: ViewUpdate, search: SearchConfig) => {
         let deco = this.decorator.createDeco(this.view);
+        let decoSpec: { [key: string]: any } = {};
         if (deco.size < 2) {
           // if there's no matches, don't highlight the current text
           this.decorations = Decoration.none;
         } else {
+          decoSpec.attributes = { [`data-current-${search.type}`]: search.value };
+          if (search.type === "word" || plugin.settings.markSelection) {
+            decoSpec.class = `cm-current-${search.type}`;
+          }
           this.decorations = deco.update({
             // remove the decorations applied to the text under the cursor
             filter: (from, to) => from !== search.range.from && to !== search.range.to,
             // and add a 'current' marker
-            add: [Decoration.mark({ class: `cm-current-${search.type}` }).range(search.range.from, search.range.to)],
+            add: [Decoration.mark(decoSpec).range(search.range.from, search.range.to)],
           });
         }
         update.view.update([]);
@@ -170,6 +181,21 @@ class SettingTab extends PluginSettingTab {
           await this.plugin.saveSettings();
         });
       });
+    new Setting(containerEl)
+      .setName("Mark primary selection with .cm-current-string")
+      .setDesc(`Disable this if you want to avoid additional styling on selections`)
+      .addToggle(toggle =>
+        toggle.setValue(this.plugin.settings.markSelection).onChange(async value => {
+          this.plugin.settings.markSelection = value;
+          await this.plugin.saveSettings();
+        })
+      );
+    new Setting(containerEl).setName("Selections respect ignore word list").addToggle(toggle =>
+      toggle.setValue(this.plugin.settings.selectionRespectsIgnore).onChange(async value => {
+        this.plugin.settings.selectionRespectsIgnore = value;
+        await this.plugin.saveSettings();
+      })
+    );
     new Setting(containerEl)
       .setName("Ignored words")
       .setDesc("A comma delimted list of words that will not be highlighted")

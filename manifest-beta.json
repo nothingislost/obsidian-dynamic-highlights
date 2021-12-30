@@ -1,7 +1,7 @@
 {
   "id": "obsidian-highlight-current-word",
   "name": "Highlight Current Word",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "minAppVersion": "0.13.5",
   "description": "An experimental Obsidian plugin that highlights all occurrences of the word under the cursor",
   "author": "NothingIsLost",
