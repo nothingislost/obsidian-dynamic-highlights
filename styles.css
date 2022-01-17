@@ -105,6 +105,12 @@ button:not(.mod-cta):not(.mod-warning).action-button.action-button-delete {
   background-color: #989cab;
 }
 
+.modal.mod-settings button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit,
+button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit {
+  background-color: #989cab;
+  color: white;
+}
+
 /**/
 .highlighter-setting-icon {
   display: flex;
@@ -112,13 +118,17 @@ button:not(.mod-cta):not(.mod-warning).action-button.action-button-delete {
   width: 24px;
 }
 
-.highlighter-item-draggable {
-  cursor: grab;
+.dynamic-highlights-settings .highlighter-item-draggable {
+  cursor: initial;
   display: grid;
   grid-gap: 8px;
   grid-template-columns: 0.2fr 0.5fr 7fr;
   align-items: center;
   border-top: 1px solid var(--background-modifier-border);
+}
+
+.dynamic-highlights-settings .highlighter-setting-icon-drag {
+  cursor: grab;
 }
 
 .highlighter-container {
