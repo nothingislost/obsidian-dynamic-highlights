@@ -1,5 +1,5 @@
 import Pickr from "@simonwep/pickr";
-import { App, ButtonComponent, Notice, PluginSettingTab, Setting, TextComponent, ToggleComponent } from "obsidian";
+import { App, ButtonComponent, Notice, PluginSettingTab, setIcon, Setting, TextComponent, ToggleComponent } from "obsidian";
 import Sortable from "sortablejs";
 import DynamicHighlightsPlugin from "../main";
 import { setAttributes } from "./settings";
@@ -28,17 +28,19 @@ export class SettingTab extends PluginSettingTab {
       .setName("Define persistent highlighters")
       .setClass("highlighterplugin-setting-item")
       .setDesc(
-        `In this section you define a unique class name along with a highlight color and a search string. Enable the regex toggle when entering a regex query. Make sure to click the save button once you're done defining the highlighter.`
+        `In this section you define a unique class name along with a highlight color and a search term/expression. Enable the regex toggle when entering a regex query. Make sure to click the save button once you're done defining the highlighter.`
       );
 
     const classInput = new TextComponent(settingsUI.controlEl);
-    classInput.setPlaceholder("CSS Class");
+    classInput.setPlaceholder("Highlighter name");
+    classInput.inputEl.ariaLabel = "Highlighter name"
     classInput.inputEl.addClass("highlighter-settings-color");
 
     const colorWrapper = settingsUI.controlEl.createDiv("color-wrapper");
 
     const hexInput = new TextComponent(colorWrapper);
-    hexInput.setPlaceholder("Hex Color");
+    hexInput.setPlaceholder("BG Color");
+    hexInput.inputEl.ariaLabel = "Background color value"
     hexInput.inputEl.addClass("highlighter-settings-value");
 
     const colorPicker = new ButtonComponent(colorWrapper);
@@ -75,6 +77,7 @@ export class SettingTab extends PluginSettingTab {
             },
           },
         });
+        colorWrapper.querySelector('.pcr-button').ariaLabel = "Background color picker";
 
         pickrCreate
           .on("clear", function (instance: Pickr) {
@@ -119,12 +122,16 @@ export class SettingTab extends PluginSettingTab {
 
     const queryWrapper = settingsUI.controlEl.createDiv("query-wrapper");
     const queryInput = new TextComponent(queryWrapper);
-    queryInput.setPlaceholder("Query");
+    queryInput.setPlaceholder("Search term");
     queryInput.inputEl.addClass("highlighter-settings-query");
 
     const queryTypeInput = new ToggleComponent(queryWrapper);
     queryTypeInput.toggleEl.addClass("highlighter-settings-regex");
     queryTypeInput.toggleEl.ariaLabel = "Enable Regex";
+    queryTypeInput.onChange(value => {
+      if (value) queryInput.setPlaceholder("Search expression");
+      else queryInput.setPlaceholder("Search term");
+    })
 
     const saveButton = new ButtonComponent(queryWrapper);
     saveButton
@@ -193,14 +200,19 @@ export class SettingTab extends PluginSettingTab {
       const icon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill=${color} stroke=${color} stroke-width="0" stroke-linecap="round" stroke-linejoin="round"><path d="M20.707 5.826l-3.535-3.533a.999.999 0 0 0-1.408-.006L7.096 10.82a1.01 1.01 0 0 0-.273.488l-1.024 4.437L4 18h2.828l1.142-1.129l3.588-.828c.18-.042.345-.133.477-.262l8.667-8.535a1 1 0 0 0 .005-1.42zm-9.369 7.833l-2.121-2.12l7.243-7.131l2.12 2.12l-7.242 7.131zM4 20h16v2H4z"/></svg>`;
       const settingItem = highlightersContainer.createEl("div");
       settingItem.addClass("highlighter-item-draggable");
+      const dragIcon = settingItem.createEl("span");
       const colorIcon = settingItem.createEl("span");
+      dragIcon.addClass("highlighter-setting-icon");
       colorIcon.addClass("highlighter-setting-icon");
       colorIcon.innerHTML = icon;
+      setIcon(dragIcon, "three-horizontal-bars");
+      dragIcon.ariaLabel = "Drag to rearrange"
+      
 
       new Setting(settingItem) 
         .setClass("highlighterplugin-setting-item")
         .setName(highlighter)
-        .setDesc((regex ? "regex search: " : "string search: ") + query)
+        .setDesc((regex ? "search term: " : "search expression: ") + query)
         .addButton(button => {
           button
             .setClass("action-button")
