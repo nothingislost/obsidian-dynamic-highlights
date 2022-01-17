@@ -70,7 +70,6 @@ const staticHighlighter = ViewPlugin.fromClass(
       if (sel.ranges.length > 1) return Decoration.none;
       let deco = [];
       let queries = Object.values(view.state.facet(staticHighlightConfig).queries);
-      console.log("getDeco queries", queries);
       for (let part of view.visibleRanges) {
         for (let query of queries) {
           let cursor: RegExpCursor | SearchCursor;

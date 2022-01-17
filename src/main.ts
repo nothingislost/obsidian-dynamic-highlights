@@ -63,7 +63,6 @@ export default class DynamicHighlightsPlugin extends Plugin {
         return;
       }
       this.iterateCM6(view => {
-        console.log("reconfig with", view, reconfigure, config)
         view.dispatch({
           effects: reconfigure(config),
         });

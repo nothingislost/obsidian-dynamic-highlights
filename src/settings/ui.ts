@@ -41,10 +41,8 @@ export class SettingTab extends PluginSettingTab {
     hexInput.setPlaceholder("Hex Color");
     hexInput.inputEl.addClass("highlighter-settings-value");
 
-    let foo = settingsUI
-      .addButton(button => {
-        button.setClass("highlightr-color-picker");
-      })
+    const colorPicker = new ButtonComponent(colorWrapper);
+    colorPicker.setClass("highlightr-color-picker")
       .then(() => {
         let input = hexInput.inputEl;
         let currentColor = hexInput.inputEl.value || null;
@@ -53,7 +51,8 @@ export class SettingTab extends PluginSettingTab {
 
         let colorHex;
         let pickrCreate = new Pickr({
-          el: ".highlightr-color-picker",
+          el: colorPicker.buttonEl,
+          container: colorWrapper,
           theme: "nano",
           swatches: colorMap,
           defaultRepresentation: "HEXA",
@@ -117,7 +116,6 @@ export class SettingTab extends PluginSettingTab {
             instance.addSwatch(color.toHEXA().toString());
           });
       });
-    colorWrapper.appendChild(settingsUI.controlEl.querySelector(".pickr"));
 
     const queryWrapper = settingsUI.controlEl.createDiv("query-wrapper");
     const queryInput = new TextComponent(queryWrapper);
