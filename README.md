@@ -47,3 +47,7 @@ Install the BRAT plugin via the Obsidian Plugin Browser and then add the beta re
 ### Manually installing the plugin
 
 - Copy over `main.js`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/obsidian-.../`.
+
+### Acknowledgments
+Thanks to @chrisgrieser for the plugin idea and feedback. 
+Thanks to @chetachiezikeuzor for the plugin settings UI code which was inspired by https://github.com/chetachiezikeuzor/highlightr-Plugin/
