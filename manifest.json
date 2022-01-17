@@ -1,9 +1,9 @@
 {
-  "id": "obsidian-highlight-current-word",
-  "name": "Highlight Current Word",
-  "version": "0.0.6",
+  "id": "obsidian-dynamic-highlights",
+  "name": "Dynamic Highlights",
+  "version": "0.1.0",
   "minAppVersion": "0.13.5",
-  "description": "An experimental Obsidian plugin that highlights all occurrences of the word under the cursor",
+  "description": "An Obsidian plugin that dynamically highlights text based on selection or search query",
   "author": "NothingIsLost",
   "authorUrl": "https://github.com/nothingislost",
   "isDesktopOnly": false
