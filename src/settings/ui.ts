@@ -201,10 +201,15 @@ export class SettingTab extends PluginSettingTab {
       setIcon(dragIcon, "three-horizontal-bars");
       dragIcon.ariaLabel = "Drag to rearrange";
 
+      let desc: string[] = []
+      desc.push((regex ? "search expression: " : "search term: ") + query)
+      desc.push("css class: " + highlighter)
+      desc.push("color: " + config.queries[highlighter].color)
+
       new Setting(settingItem)
         .setClass("highlighterplugin-setting-item")
         .setName(highlighter)
-        .setDesc((regex ? "search expression: " : "search term: ") + query)
+        .setDesc(desc.join(" | "))
         .addButton(button => {
           button
             .setClass("action-button")
