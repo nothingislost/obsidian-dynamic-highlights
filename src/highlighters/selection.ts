@@ -92,8 +92,10 @@ const matchHighlighter = ViewPlugin.fromClass(
       if (sel.ranges.length > 1) return Decoration.none;
       let range = sel.main,
         query,
-        check = null;
+        check = null,
+        matchType: string;
       if (range.empty) {
+        matchType = "word";
         if (!conf.highlightWordAroundCursor) return Decoration.none;
         let word = state.wordAt(range.head);
         if (!word) return Decoration.none;
@@ -102,6 +104,7 @@ const matchHighlighter = ViewPlugin.fromClass(
         let ignoredWords = new Set(conf.ignoredWords.split(",").map(w => w.toLowerCase().trim()));
         if (ignoredWords.has(query.toLowerCase()) || query.length < conf.minSelectionLength) return Decoration.none;
       } else {
+        matchType = "string";
         if (!conf.highlightSelectedText) return Decoration.none;
         let len = range.to - range.from;
         if (len < conf.minSelectionLength || len > 200) return Decoration.none;
@@ -122,13 +125,13 @@ const matchHighlighter = ViewPlugin.fromClass(
             let string = state.sliceDoc(from, to).trim();
             if (check && from <= range.from && to >= range.to) {
               const mainMatchDeco = Decoration.mark({
-                class: "cm-current-string",
+                class: `cm-current-${matchType}`,
                 attributes: { "data-contents": string },
               });
               deco.push(mainMatchDeco.range(from, to));
             } else if (from >= range.to || to <= range.from) {
               const matchDeco = Decoration.mark({
-                class: "cm-matched-string",
+                class: `cm-matched-${matchType}`,
                 attributes: { "data-contents": string },
               });
               deco.push(matchDeco.range(from, to));

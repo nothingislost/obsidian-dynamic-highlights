@@ -1,7 +1,7 @@
 // originally from: https://github.com/codemirror/search/blob/main/src/selection-match.ts
 import { RegExpCursor, SearchCursor } from "@codemirror/search";
 import { combineConfig, Compartment, Extension, Facet } from "@codemirror/state";
-import { Decoration, DecorationSet, EditorView, ViewPlugin, ViewUpdate } from "@codemirror/view";
+import { Decoration, DecorationSet, EditorView, PluginField, ViewPlugin, ViewUpdate } from "@codemirror/view";
 import { cloneDeep } from "lodash";
 import DynamicHighlightsPlugin from "src/main";
 import { SearchQueries } from "src/settings/settings";
@@ -53,22 +53,29 @@ export function buildStyles(plugin: DynamicHighlightsPlugin) {
 const staticHighlighter = ViewPlugin.fromClass(
   class {
     decorations: DecorationSet;
+    lineDecorations: DecorationSet;
 
     constructor(view: EditorView) {
-      this.decorations = this.getDeco(view);
+      let { token, line } = this.getDeco(view);
+      this.decorations = token;
+      this.lineDecorations = line;
     }
 
     update(update: ViewUpdate) {
-      let reconfigured = update.startState.facet(staticHighlightConfig) !== update.state.facet(staticHighlightConfig)
-      if (update.selectionSet || update.docChanged || update.viewportChanged || reconfigured)
-        this.decorations = this.getDeco(update.view);
+      let reconfigured = update.startState.facet(staticHighlightConfig) !== update.state.facet(staticHighlightConfig);
+      if (update.docChanged || update.viewportChanged || reconfigured) {
+        let { token, line } = this.getDeco(update.view);
+        this.decorations = token;
+        this.lineDecorations = line;
+      }
     }
 
-    getDeco(view: EditorView) {
+    getDeco(view: EditorView): { line: DecorationSet; token: DecorationSet } {
       let { state } = view,
         sel = state.selection;
-      if (sel.ranges.length > 1) return Decoration.none;
-      let deco = [];
+      let tokenDecos = [];
+      // let lineDecos = [];
+      let lineClasses: { [key: number]: string[] } = {};
       let queries = Object.values(view.state.facet(staticHighlightConfig).queries);
       for (let part of view.visibleRanges) {
         for (let query of queries) {
@@ -78,15 +85,30 @@ const staticHighlighter = ViewPlugin.fromClass(
           while (!cursor.next().done) {
             let { from, to } = cursor.value;
             let string = state.sliceDoc(from, to).trim();
+            const linePos = view.lineBlockAt(from)?.from;
+            if (!lineClasses[linePos]) lineClasses[linePos] = [];
+            lineClasses[linePos].push(query.class);
             const markDeco = Decoration.mark({ class: query.class, attributes: { "data-contents": string } });
-            deco.push(markDeco.range(from, to));
+            tokenDecos.push(markDeco.range(from, to));
           }
         }
       }
-      return Decoration.set(deco.sort((a, b) => a.from - b.from));
+      Object.entries(lineClasses).forEach(([pos, classes]) => {
+        const lineDeco = Decoration.line({ class: classes.join(" ") });
+        // lineDecos.push(lineDeco.range(pos));
+      });
+      return {
+        // line: Decoration.set(lineDecos.sort((a, b) => a.from - b.from)),
+        line: Decoration.none,
+        token: Decoration.set(tokenDecos.sort((a, b) => a.from - b.from)),
+      };
     }
   },
   {
     decorations: v => v.decorations,
+    // provide: [
+    // PluginField.decorations.from(plugin => plugin.decorations),
+    // PluginField.decorations.from(plugin => plugin.lineDecorations),
+    // ],
   }
 );

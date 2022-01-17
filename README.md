@@ -14,8 +14,8 @@ You can define as many unique highlighters as you'd like as long as the class na
 
 If there is no active selection, all occurences of the word underneath the current cursor position will be highlighted
 - Word matching is case insensitive
-- The word currently under the cursor will be marked with `.cm-current-string`
-- Occurences of the current word found elsewhere in the document will be marked with `cm-matched-string`
+- The word currently under the cursor will be marked with `.cm-current-word`
+- Occurences of the current word found elsewhere in the document will be marked with `cm-matched-word`
 - All occurences will recieve the `data-contents` data attribute which will hold the current word value
 
 If there is an active selection, all occurences of the text inside the selection will be highlighted.
