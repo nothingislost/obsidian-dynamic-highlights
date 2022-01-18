@@ -7,11 +7,11 @@ import {
   setIcon,
   Setting,
   TextComponent,
-  ToggleComponent,
+  ToggleComponent
 } from "obsidian";
 import Sortable from "sortablejs";
 import DynamicHighlightsPlugin from "../main";
-import { setAttributes } from "./settings";
+import { markTypes, setAttributes } from "./settings";
 
 export class SettingTab extends PluginSettingTab {
   plugin: DynamicHighlightsPlugin;
@@ -59,14 +59,11 @@ export class SettingTab extends PluginSettingTab {
       let input = hexInput.inputEl;
       let currentColor = hexInput.inputEl.value || null;
 
-      const colorMap = config.queryOrder.map(highlightKey => config.queries[highlightKey].color);
-
       let colorHex;
       pickrCreate = new Pickr({
         el: colorPicker.buttonEl,
         container: colorWrapper,
         theme: "nano",
-        swatches: colorMap,
         defaultRepresentation: "HEXA",
         default: "#42188038",
         comparison: false,
@@ -76,12 +73,12 @@ export class SettingTab extends PluginSettingTab {
           hue: true,
           interaction: {
             hex: true,
-            rgba: true,
+            rgba: false,
             hsla: true,
             hsva: false,
             cmyk: false,
             input: true,
-            clear: false,
+            clear: true,
             cancel: true,
             save: true,
           },
@@ -93,17 +90,21 @@ export class SettingTab extends PluginSettingTab {
         .on("clear", function (instance: Pickr) {
           instance.hide();
           input.trigger("change");
+          classInput.inputEl.setAttribute("style", `background-color: none; color: var(--text-normal);`);
+          setAttributes(input, {
+            value: "",
+            style: `background-color: none; color: var(--text-normal);`,
+          });
         })
         .on("cancel", function (instance: Pickr) {
-          currentColor = instance.getSelectedColor().toHEXA().toString();
-
+          currentColor = instance.getSelectedColor()?.toHEXA().toString();
           input.trigger("change");
           instance.hide();
         })
         .on("change", function (color: Pickr.HSVaColor) {
-          colorHex = color.toHEXA().toString();
+          colorHex = color?.toHEXA().toString() || "";
           let newColor;
-          colorHex.length == 6 ? (newColor = `${color.toHEXA().toString()}A6`) : (newColor = color.toHEXA().toString());
+          colorHex && colorHex.length == 6 ? (newColor = `${colorHex}A6`) : (newColor = colorHex);
           classInput.inputEl.setAttribute("style", `background-color: ${newColor}; color: var(--text-normal);`);
 
           setAttributes(input, {
@@ -116,15 +117,13 @@ export class SettingTab extends PluginSettingTab {
           input.trigger("change");
         })
         .on("save", function (color: Pickr.HSVaColor, instance: Pickr) {
-          let newColorValue = color.toHEXA().toString();
-
+          let newColorValue = color?.toHEXA().toString() || "";
           input.setText(newColorValue);
           input.textContent = newColorValue;
           input.value = newColorValue;
           input.trigger("change");
-
           instance.hide();
-          instance.addSwatch(color.toHEXA().toString());
+          // instance.addSwatch(color?.toHEXA().toString());
         });
     });
 
@@ -140,6 +139,14 @@ export class SettingTab extends PluginSettingTab {
       if (value) queryInput.setPlaceholder("Search expression");
       else queryInput.setPlaceholder("Search term");
     });
+    const markWrapper = settingsUI.controlEl.createDiv("mark-wrapper");
+    markWrapper.appendText("matches");
+    const markMatch = new ToggleComponent(markWrapper);
+    markMatch.setValue(true);
+    markWrapper.appendText("named capture groups");
+    const markGroup = new ToggleComponent(markWrapper);
+    markWrapper.appendText("parent line");
+    const markLine = new ToggleComponent(markWrapper);
 
     const saveButton = new ButtonComponent(queryWrapper);
     saveButton
@@ -151,17 +158,22 @@ export class SettingTab extends PluginSettingTab {
         let className = classInput.inputEl.value.replace(/ /g, "-");
         let hexValue = hexInput.inputEl.value;
         let queryValue = queryInput.inputEl.value;
-        let queryTypeValue = queryTypeInput.toggleEl.hasClass("is-enabled");
+        let queryTypeValue = queryTypeInput.getValue();
+        let enabledMarks: markTypes[] = [];
+        markMatch.getValue() ? enabledMarks.push("match") : null;
+        markGroup.getValue() ? enabledMarks.push("group") : null;
+        markLine.getValue() ? enabledMarks.push("line") : null;
 
-        if (className && hexValue) {
+        if (className) {
           if (!config.queryOrder.includes(className)) {
             config.queryOrder.push(className);
           }
           config.queries[className] = {
             class: className,
-            color: hexValue,
+            color: hexValue ? hexValue : null,
             regex: queryTypeValue,
             query: queryValue,
+            mark: enabledMarks,
           };
           await this.plugin.saveSettings();
           this.plugin.updateStaticHighlighter();
@@ -201,10 +213,10 @@ export class SettingTab extends PluginSettingTab {
       setIcon(dragIcon, "three-horizontal-bars");
       dragIcon.ariaLabel = "Drag to rearrange";
 
-      let desc: string[] = []
-      desc.push((regex ? "search expression: " : "search term: ") + query)
-      desc.push("css class: " + highlighter)
-      desc.push("color: " + config.queries[highlighter].color)
+      let desc: string[] = [];
+      desc.push((regex ? "search expression: " : "search term: ") + query);
+      desc.push("css class: " + highlighter);
+      desc.push("color: " + config.queries[highlighter].color);
 
       new Setting(settingItem)
         .setClass("highlighterplugin-setting-item")
@@ -222,9 +234,16 @@ export class SettingTab extends PluginSettingTab {
               hexInput.inputEl.value = options.color;
               queryInput.inputEl.value = options.query;
               pickrCreate.setColor(options.color);
-              options.regex
-                ? queryTypeInput.toggleEl.addClass("is-enabled")
-                : queryTypeInput.toggleEl.removeClass("is-enabled");
+              queryTypeInput.setValue(options.regex);
+              if (!options.mark) {
+                markMatch.setValue(true);
+                markLine.setValue(false);
+                markGroup.setValue(false);
+              } else {
+                options.mark.includes("match") ? markMatch.setValue(true) : markMatch.setValue(false);
+                options.mark.includes("line") ? markLine.setValue(true) : markLine.setValue(false);
+                options.mark.includes("group") ? markGroup.setValue(true) : markGroup.setValue(false);
+              }
             });
         })
         .addButton(button => {

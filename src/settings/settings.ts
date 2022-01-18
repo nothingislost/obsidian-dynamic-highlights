@@ -7,11 +7,13 @@ interface SearchConfig {
   type: string;
   range: { from: number; to: number };
 }
+export type markTypes = "line" | "match" | "group";
 interface SearchQuery {
   query: string;
   class: string;
   color: string;
   regex: boolean;
+  mark?: markTypes[];
 }
 export interface SearchQueries {
   [key: string]: SearchQuery;

@@ -1,6 +1,6 @@
 {
   "name": "obsidian-dynamic-highlights",
-  "version": "0.1.0",
+  "version": "0.1.3",
   "description": "An Obsidian plugin that dynamically highlights text based on selection or search query",
   "main": "main.js",
   "scripts": {
@@ -31,14 +31,13 @@
     "builtin-modules": "^3.2.0",
     "esbuild": "0.13.12",
     "monkey-around": "^2.2.0",
-    "obsidian": "^0.13.8",
+    "obsidian": "^0.13.21",
     "tslib": "2.3.1",
-    "typescript": "4.4.4"
-  },
-  "dependencies": {
+    "typescript": "4.4.4",
     "@simonwep/pickr": "^1.8.2",
-    "@types/xregexp": "^4.4.0",
-    "sortablejs": "^1.14.0",
-    "xregexp": "^5.1.0"
+    "@types/lodash": "^4.14.178",
+    "lodash": "^4.17.21",
+    "regexp-match-indices": "^1.0.2",
+    "sortablejs": "^1.14.0"
   }
 }

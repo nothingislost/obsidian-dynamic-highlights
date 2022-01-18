@@ -26,6 +26,13 @@
   align-items: flex-end;
   flex-grow: 100;
 }
+.dynamic-highlights-settings .mark-wrapper {
+  display: flex;
+  align-items: flex-end;
+}
+.dynamic-highlights-settings .mark-wrapper .checkbox-container {
+  margin: 0 4px;
+}
 
 .dynamic-highlights-settings .pickr .pcr-button {
   border-radius: 50px;
