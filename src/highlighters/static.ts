@@ -3,7 +3,7 @@ import { syntaxTree } from "@codemirror/language";
 import { RegExpCursor, SearchCursor } from "@codemirror/search";
 import { combineConfig, Compartment, Extension, Facet } from "@codemirror/state";
 import { tokenClassNodeProp } from "@codemirror/stream-parser";
-import { Decoration, DecorationSet, EditorView, PluginField, Range, ViewPlugin, ViewUpdate } from "@codemirror/view";
+import { Decoration, DecorationSet, EditorView, PluginField, Range, ViewPlugin, ViewUpdate, WidgetType } from "@codemirror/view";
 import { cloneDeep } from "lodash";
 import { requireApiVersion } from "obsidian";
 import type { RegExpExecArray } from "regexp-match-indices/types";
@@ -57,34 +57,58 @@ export function buildStyles(plugin: DynamicHighlightsPlugin) {
   return theme;
 }
 
+class IconWidget extends WidgetType {
+  attributes: Record<string, string>
+
+  constructor(attributes?: Record<string, string>) {
+    super();
+    // this.attributes = attributes
+  }
+
+  toDOM() {
+    let headerEl = document.createElement("span");
+    // headerEl.setAttrs(this.attributes);
+    headerEl.addClass('marker-icon');
+    return headerEl;
+  }
+
+  ignoreEvent() {
+    return true;
+  }
+}
+
 const staticHighlighter = ViewPlugin.fromClass(
   class {
     decorations: DecorationSet;
     lineDecorations: DecorationSet;
     groupDecorations: DecorationSet;
+    widgetDecorations: DecorationSet;
 
     constructor(view: EditorView) {
-      let { token, line, group } = this.getDeco(view);
+      let { token, line, group, widget } = this.getDeco(view);
       this.decorations = token;
       this.lineDecorations = line;
       this.groupDecorations = group;
+      this.widgetDecorations = widget;
     }
 
     update(update: ViewUpdate) {
       let reconfigured = update.startState.facet(staticHighlightConfig) !== update.state.facet(staticHighlightConfig);
       if (update.docChanged || update.viewportChanged || reconfigured) {
-        let { token, line, group } = this.getDeco(update.view);
+        let { token, line, group, widget } = this.getDeco(update.view);
         this.decorations = token;
         this.lineDecorations = line;
         this.groupDecorations = group;
+        this.widgetDecorations = widget;
       }
     }
 
-    getDeco(view: EditorView): { line: DecorationSet; token: DecorationSet; group: DecorationSet } {
+    getDeco(view: EditorView): { line: DecorationSet; token: DecorationSet; group: DecorationSet, widget: DecorationSet } {
       let { state } = view,
         tokenDecos: Range<Decoration>[] = [],
         lineDecos: Range<Decoration>[] = [],
         groupDecos: Range<Decoration>[] = [],
+        widgetDecos: Range<Decoration>[] = [],
         lineClasses: { [key: number]: string[] } = {},
         queries = Object.values(view.state.facet(staticHighlightConfig).queries);
       for (let part of view.visibleRanges) {
@@ -111,10 +135,14 @@ const staticHighlighter = ViewPlugin.fromClass(
               if (!lineClasses[linePos]) lineClasses[linePos] = [];
               lineClasses[linePos].push(query.class);
             }
-            if (query.mark?.contains("match")) {
+            if (!query.mark || query.mark?.contains("match")) {
               const markDeco = Decoration.mark({ class: query.class, attributes: { "data-contents": string } });
               tokenDecos.push(markDeco.range(from, to));
             }
+            // let iconDeco = Decoration.widget({
+            //   widget: new IconWidget(),
+            // });
+            // widgetDecos.push(iconDeco.range(from, from));
             if (query.mark?.contains("group")) {
               let groups;
               if (cursor instanceof RegExpCursor) {
@@ -147,6 +175,7 @@ const staticHighlighter = ViewPlugin.fromClass(
         line: Decoration.set(lineDecos.sort((a, b) => a.from - b.from)),
         token: Decoration.set(tokenDecos.sort((a, b) => a.from - b.from)),
         group: Decoration.set(groupDecos.sort((a, b) => a.from - b.from)),
+        widget: Decoration.set(widgetDecos.sort((a, b) => a.from - b.from)),
       };
     }
   },
@@ -157,6 +186,7 @@ const staticHighlighter = ViewPlugin.fromClass(
       PluginField.decorations.from(plugin => plugin.lineDecorations),
       PluginField.decorations.from(plugin => plugin.groupDecorations),
       PluginField.decorations.from(plugin => plugin.decorations),
+      PluginField.decorations.from(plugin => plugin.widgetDecorations),
     ],
   }
 );
