@@ -44,11 +44,12 @@ Only words with 3 or more characters will be highlighted
 
 ### Installing via BRAT
 
-Install the BRAT plugin via the Obsidian Plugin Browser and then add the beta repository "nothingislost/obsidian-..."
+Install the BRAT plugin via the Obsidian Plugin Browser and then add the beta repository "nothingislost/obsidian-dynamic-highlights"
 
 ### Manually installing the plugin
 
-- Copy over `main.js`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/obsidian-.../`.
+- Download the latest release from https://github.com/nothingislost/obsidian-dynamic-highlights/releases
+- Copy over `main.js`, ``manifest.json`, `styles.css` to your vault `VaultFolder/.obsidian/plugins/obsidian-dynamic-highlights/`.
 
 ### Acknowledgments
 Thanks to @chrisgrieser for the plugin idea and feedback. 

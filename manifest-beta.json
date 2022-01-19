@@ -3,7 +3,7 @@
   "name": "Dynamic Highlights",
   "version": "0.1.6",
   "minAppVersion": "0.13.5",
-  "description": "An Obsidian plugin that dynamically highlights text based on selection or search query",
+  "description": "Dynamically highlight text based on cursor selection or search query with full regex, mobile, and live preview support",
   "author": "NothingIsLost",
   "authorUrl": "https://github.com/nothingislost",
   "isDesktopOnly": false
