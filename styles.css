@@ -48,6 +48,27 @@
   margin: 1px 4px 0;
 }
 
+.is-mobile .dynamic-highlights-settings .setting-item-control button {
+  width: 3em;
+}
+/* .is-mobile .dynamic-highlights-settings .setting-item-control button svg {
+  margin: 0 auto;
+} */
+.is-mobile .dynamic-highlights-settings .mark-wrapper {
+  flex-wrap: wrap;
+}
+
+.is-mobile .dynamic-highlights-settings .setting-item-control button.pcr-button {
+  width: 2em;
+}
+body:not(.is-mobile) .dynamic-highlights-settings .action-button.action-button-add {
+  height: 2em;
+  width: 2.5em;
+}
+.dynamic-highlights-settings .checkbox-container {
+  min-width: 42px;
+}
+
 button.action-button {
   padding: 4px 14px;
   border-radius: 6px;
@@ -78,7 +99,17 @@ button.action-button svg {
   margin-left: 4px;
 }
 .dynamic-highlights-settings .pickr .pcr-button {
-  height: 30px;
+  height: 2em;
+}
+
+.dynamic-highlights-settings button.action-button {
+  height: 2.3rem;
+  display: grid;
+  place-content: center;
+}
+
+.dynamic-highlights-settings .highlighter-container {
+  user-select: text;
 }
 
 .highlighter-container .highlighterplugin-setting-item {
