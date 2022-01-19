@@ -1,8 +1,8 @@
-## Obsidian Highlight Current Word
+## Dynamic Highlights
 
 An Obsidian plugin that dynamically highlights text based on selection or search query.
 
-This plugin currently only works in Source or Live Preview mode. It will affect Reading mode or the Legacy Editor.
+This plugin currently only works in the Source or Live Preview editor modes. For now it will not affect Reading mode or the Legacy Editor.
 
 ### Persistent Highlights
 
