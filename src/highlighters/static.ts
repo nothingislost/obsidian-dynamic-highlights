@@ -3,7 +3,16 @@ import { syntaxTree } from "@codemirror/language";
 import { RegExpCursor, SearchCursor } from "@codemirror/search";
 import { combineConfig, Compartment, Extension, Facet } from "@codemirror/state";
 import { tokenClassNodeProp } from "@codemirror/stream-parser";
-import { Decoration, DecorationSet, EditorView, PluginField, Range, ViewPlugin, ViewUpdate, WidgetType } from "@codemirror/view";
+import {
+  Decoration,
+  DecorationSet,
+  EditorView,
+  PluginField,
+  Range,
+  ViewPlugin,
+  ViewUpdate,
+  WidgetType,
+} from "@codemirror/view";
 import { cloneDeep } from "lodash";
 import { requireApiVersion } from "obsidian";
 import type { RegExpExecArray } from "regexp-match-indices/types";
@@ -58,17 +67,16 @@ export function buildStyles(plugin: DynamicHighlightsPlugin) {
 }
 
 class IconWidget extends WidgetType {
-  attributes: Record<string, string>
+  className: string;
 
-  constructor(attributes?: Record<string, string>) {
+  constructor(className?: string) {
     super();
-    // this.attributes = attributes
+    this.className = className
   }
 
   toDOM() {
     let headerEl = document.createElement("span");
-    // headerEl.setAttrs(this.attributes);
-    headerEl.addClass('marker-icon');
+    headerEl.addClass(this.className);
     return headerEl;
   }
 
@@ -103,7 +111,12 @@ const staticHighlighter = ViewPlugin.fromClass(
       }
     }
 
-    getDeco(view: EditorView): { line: DecorationSet; token: DecorationSet; group: DecorationSet, widget: DecorationSet } {
+    getDeco(view: EditorView): {
+      line: DecorationSet;
+      token: DecorationSet;
+      group: DecorationSet;
+      widget: DecorationSet;
+    } {
       let { state } = view,
         tokenDecos: Range<Decoration>[] = [],
         lineDecos: Range<Decoration>[] = [],
@@ -139,10 +152,12 @@ const staticHighlighter = ViewPlugin.fromClass(
               const markDeco = Decoration.mark({ class: query.class, attributes: { "data-contents": string } });
               tokenDecos.push(markDeco.range(from, to));
             }
-            // let iconDeco = Decoration.widget({
-            //   widget: new IconWidget(),
-            // });
-            // widgetDecos.push(iconDeco.range(from, from));
+            if (query.mark?.contains("start") || query.mark?.contains("end")) {
+              let startDeco = Decoration.widget({widget: new IconWidget(query.class + "-start")});
+              let endDeco = Decoration.widget({widget: new IconWidget(query.class + "-end")});
+              if (query.mark?.contains("start")) widgetDecos.push(startDeco.range(from, from));
+              if (query.mark?.contains("end")) widgetDecos.push(endDeco.range(to, to));
+            }
             if (query.mark?.contains("group")) {
               let groups;
               if (cursor instanceof RegExpCursor) {

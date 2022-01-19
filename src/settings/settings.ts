@@ -7,7 +7,7 @@ interface SearchConfig {
   type: string;
   range: { from: number; to: number };
 }
-export type markTypes = "line" | "match" | "group";
+export type markTypes = "line" | "match" | "group" | "start" | "end";
 interface SearchQuery {
   query: string;
   class: string;

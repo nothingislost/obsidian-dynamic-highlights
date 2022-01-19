@@ -29,9 +29,11 @@
 .dynamic-highlights-settings .mark-wrapper {
   display: flex;
   align-items: flex-end;
+  min-width: 80%;
 }
 .dynamic-highlights-settings .mark-wrapper .checkbox-container {
-  margin: 0 4px;
+  margin: 0px 18px 0 8px;
+  min-width: 42px;
 }
 
 .dynamic-highlights-settings .pickr .pcr-button {

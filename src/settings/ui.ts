@@ -147,6 +147,10 @@ export class SettingTab extends PluginSettingTab {
     const markGroup = new ToggleComponent(markWrapper);
     markWrapper.appendText("parent line");
     const markLine = new ToggleComponent(markWrapper);
+    markWrapper.appendText("match start");
+    const markStart = new ToggleComponent(markWrapper);
+    markWrapper.appendText("match end");
+    const markEnd = new ToggleComponent(markWrapper);
 
     const saveButton = new ButtonComponent(queryWrapper);
     saveButton
@@ -163,6 +167,8 @@ export class SettingTab extends PluginSettingTab {
         markMatch.getValue() ? enabledMarks.push("match") : null;
         markGroup.getValue() ? enabledMarks.push("group") : null;
         markLine.getValue() ? enabledMarks.push("line") : null;
+        markStart.getValue() ? enabledMarks.push("start") : null;
+        markEnd.getValue() ? enabledMarks.push("end") : null;
 
         if (className) {
           if (!config.queryOrder.includes(className)) {
@@ -243,6 +249,8 @@ export class SettingTab extends PluginSettingTab {
                 options.mark.includes("match") ? markMatch.setValue(true) : markMatch.setValue(false);
                 options.mark.includes("line") ? markLine.setValue(true) : markLine.setValue(false);
                 options.mark.includes("group") ? markGroup.setValue(true) : markGroup.setValue(false);
+                options.mark.includes("start") ? markStart.setValue(true) : markStart.setValue(false);
+                options.mark.includes("end") ? markEnd.setValue(true) : markEnd.setValue(false);
               }
             });
         })
