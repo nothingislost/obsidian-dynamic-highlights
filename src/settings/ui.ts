@@ -227,6 +227,7 @@ export class SettingTab extends PluginSettingTab {
           };
           await this.plugin.saveSettings();
           this.plugin.updateStaticHighlighter();
+          this.plugin.updateCustomCSS();
           this.plugin.updateStyles();
           this.display();
         } else if (className && !hexValue) {
