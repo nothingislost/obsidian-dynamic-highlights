@@ -40,7 +40,8 @@ The default list can be found here: https://gist.github.com/sebleier/554280
 
 ### Limitations
 
-Only words with 3 or more characters will be highlighted
+- There is currently no support for dynamic highlights in reading/preview mode.
+- Only strings with 3 or more characters will be highlighted in selection highlight mode
 
 ### Installing via BRAT
 

@@ -22,6 +22,8 @@
   display: grid;
   place-content: center;
   padding: 8px 18px;
+  /* set this to the obsidian default to address theme devs messing with it 👀 */
+  margin-right: 12px;
 }
 
 .dynamic-highlights-settings h3.persistent-highlights {
@@ -58,9 +60,9 @@
 
 /* #region color selection */
 
-.dynamic-highlights-settings .highlighter-settings-color {
+/* .dynamic-highlights-settings .highlighter-name {
   width: 20ch;
-}
+} */
 
 .dynamic-highlights-settings .color-wrapper {
   display: flex;
@@ -135,8 +137,7 @@
 
 .is-mobile .dynamic-highlights-settings .mark-wrapper {
   white-space: nowrap;
-  /* TODO: wrap all marker toggles in a container */
-  grid-template-columns: repeat(4, auto);
+  grid-template-columns: repeat(2, auto);
 }
 
 /* #endregion settings tab -- mark types */
@@ -161,6 +162,7 @@
 }
 
 .dynamic-highlights-settings .custom-css-wrapper .cm-editor {
+  border: 1px solid var(--background-modifier-border);
   background-color: var(--background-primary-alt);
   max-height: 15em;
   overflow: hidden;
@@ -183,9 +185,19 @@
 
 /* #region mobile specific styles */
 
-.is-mobile .setting-item-control button.action-button-save,
+.is-mobile .dynamic-highlights-settings .setting-item-control button.action-button-save,
 .is-mobile .dynamic-highlights-settings .query-wrapper input {
   width: unset;
+}
+
+.is-mobile .dynamic-highlights-settings .setting-item-control input.highlighter-name {
+  width: fit-content;
+}
+
+.is-mobile .dynamic-highlights-settings .query-wrapper {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  place-items: center;
 }
 
 .is-mobile .dynamic-highlights-settings .setting-item-control select,
@@ -273,9 +285,59 @@
   box-shadow: 0px 3px 32px rgb(31 38 135 / 15%);
 }
 
-/* #region persistent highlighters sortable ui */
+/* #endregion persistent highlighters sortable ui */
 
 /* #endregion settings tab */
+
+/* #region style settings import/export */
+
+.modal-dynamic-highlights {
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-dynamic-highlights .modal-content {
+  flex-grow: 1;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-dynamic-highlights textarea {
+  display: block;
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-monospace) !important;
+  font-size: 12px;
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow-x: scroll;
+  margin-bottom: 5px;
+}
+
+.modal-dynamic-highlights .setting-item {
+  align-items: flex-start;
+}
+
+.modal-dynamic-highlights .setting-item .setting-item-control a {
+  margin-left: 4px;
+}
+
+.modal-dynamic-highlights button {
+  margin: 10px 0 0;
+}
+
+.modal-dynamic-highlights .style-settings-import-error {
+  display: none;
+  color: var(--text-error);
+}
+
+.modal-dynamic-highlights .style-settings-import-error.active {
+  display: block;
+}
+
+/* #endregion style settings import/export */
 
 /* #region pickr vendored styles */
 .pickr {

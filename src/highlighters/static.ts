@@ -67,7 +67,7 @@ export function buildStyles(plugin: DynamicHighlightsPlugin) {
 }
 
 class IconWidget extends WidgetType {
-  className: string;
+  className: string | undefined;
 
   constructor(className?: string) {
     super();
@@ -76,7 +76,7 @@ class IconWidget extends WidgetType {
 
   toDOM() {
     let headerEl = document.createElement("span");
-    headerEl.addClass(this.className);
+    this.className && headerEl.addClass(this.className);
     return headerEl;
   }
 

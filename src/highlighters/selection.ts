@@ -4,27 +4,29 @@ import { CharCategory, combineConfig, Compartment, Extension, Facet } from "@cod
 import { Decoration, DecorationSet, EditorView, ViewPlugin, ViewUpdate } from "@codemirror/view";
 import { cloneDeep } from "lodash";
 import { debounce, Debouncer } from "obsidian";
+import { ignoredWords } from "src/settings/ignoredWords";
 
 export type SelectionHighlightOptions = {
   /// Determines whether, when nothing is selected, the word around
   /// the cursor is matched instead. Defaults to false.
-  highlightWordAroundCursor?: boolean;
-  highlightSelectedText?: boolean;
+  highlightWordAroundCursor: boolean;
+  highlightSelectedText: boolean;
   /// The minimum length of the selection before it is highlighted.
   /// Defaults to 1 (always highlight non-cursor selections).
-  minSelectionLength?: number;
+  minSelectionLength: number;
   /// The amount of matches (in the viewport) at which to disable
   /// highlighting. Defaults to 100.
-  maxMatches?: number;
-  ignoredWords?: string;
-  highlightDelay?: number;
+  maxMatches: number;
+  ignoredWords: string;
+  highlightDelay: number;
 };
 
 const defaultHighlightOptions: SelectionHighlightOptions = {
-  highlightWordAroundCursor: false,
-  minSelectionLength: 1,
+  highlightWordAroundCursor: true,
+  highlightSelectedText: true,
+  minSelectionLength: 3,
   maxMatches: 100,
-  ignoredWords: "",
+  ignoredWords: ignoredWords,
   highlightDelay: 0,
 };
 

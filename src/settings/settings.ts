@@ -8,12 +8,20 @@ interface SearchConfig {
   range: { from: number; to: number };
 }
 export type markTypes = "line" | "match" | "group" | "start" | "end";
+
+export type SettingValue = number | string | boolean;
+export interface CSSSettings {
+  [key: string]: SettingValue;
+}
+
 interface SearchQuery {
   query: string;
   class: string;
-  color: string;
+  color: string | null;
   regex: boolean;
   mark?: markTypes[];
+  css?: string;
+  enabled?: boolean;
 }
 export interface SearchQueries {
   [key: string]: SearchQuery;
