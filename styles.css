@@ -1,3 +1,5 @@
+/* #region selection highlighter styles */
+
 .cm-matched-word,
 .cm-matched-string {
   text-decoration: underline dashed var(--text-accent);
@@ -8,155 +10,230 @@
   text-decoration: underline dotted var(--text-accent);
 }
 
-.ignored-words-input {
-  width: 25rem;
-  height: 10em;
+/* #endregion selection highlighter styles */
+
+/* #region settings tab */
+
+.dynamic-highlights-settings {
+  position: relative;
 }
 
-/*----------------------------------------------------------------
-    SETTINGS TAB
-  ---------------------------------------------------------------*/
+.dynamic-highlights-settings button.action-button {
+  display: grid;
+  place-content: center;
+  padding: 8px 18px;
+}
+
+.dynamic-highlights-settings h3.persistent-highlights {
+  margin: 0;
+}
+
+/* #region import/export */
+
+.dynamic-highlights-settings .import-export-wrapper {
+  right: 0;
+  position: absolute;
+  padding: 0 30px;
+}
+
+.dynamic-highlights-settings .import-export-wrapper a {
+  padding: 0 0.2em;
+}
+
+/* #endregion import/export */
+
+.dynamic-highlights-settings .highlighter-definition {
+  display: block;
+}
+
+.dynamic-highlights-settings .highlighter-definition .setting-item-control {
+  align-content: center;
+  align-items: flex-end;
+  /* TODO: switch to using grid with columns and rows */
+  flex-wrap: wrap;
+  grid-gap: 6px;
+  justify-content: flex-start;
+  margin-top: 12px;
+}
+
+/* #region color selection */
+
+.dynamic-highlights-settings .highlighter-settings-color {
+  width: 20ch;
+}
 
 .dynamic-highlights-settings .color-wrapper {
   display: flex;
   align-items: flex-end;
+  align-self: center;
 }
+
+.dynamic-highlights-settings .pickr {
+  /* display: flex; */
+}
+
+.modal.mod-settings .dynamic-highlights-settings .pcr-button,
+.modal.mod-settings .dynamic-highlights-settings .color-wrapper {
+  margin: 0;
+  padding: 0;
+  /* fixing a weird primary style that caused the picker to be oblong */
+  --scale-2-3: 0;
+  --scale-2-8: 0;
+  --scale-2-4: 0;
+}
+
+.modal.mod-settings .dynamic-highlights-settings .setting-item .pickr button.pcr-button {
+  border-radius: 50px;
+  overflow: hidden;
+  border: 2px solid var(--background-modifier-border);
+  height: 30px;
+  width: 30px;
+}
+
+/* #endregion color selection */
+
+/* #region search term & save */
+
 .dynamic-highlights-settings .query-wrapper {
   display: flex;
   align-items: flex-end;
   flex-grow: 100;
 }
-.dynamic-highlights-settings .mark-wrapper {
-  display: flex;
-  align-items: flex-end;
-  min-width: 80%;
-}
-.dynamic-highlights-settings .mark-wrapper .checkbox-container {
-  margin: 0px 18px 0 8px;
-  min-width: 42px;
-}
 
-.dynamic-highlights-settings .pickr .pcr-button {
-  border-radius: 50px;
-  overflow: hidden;
-  border: 2px solid var(--background-modifier-border);
-  margin-right: 0px;
+.dynamic-highlights-settings .query-wrapper input {
+  flex-grow: 100;
+  width: 15ch;
 }
 
 .dynamic-highlights-settings .highlighter-settings-regex {
+  /* TODO: fix the fact that this gets squashed on mobile */
   align-self: center;
   margin: 1px 4px 0;
 }
 
-.is-mobile .dynamic-highlights-settings .setting-item-control button {
-  width: 3em;
-}
-/* .is-mobile .dynamic-highlights-settings .setting-item-control button svg {
-  margin: 0 auto;
-} */
-.is-mobile .dynamic-highlights-settings .mark-wrapper {
-  flex-wrap: wrap;
+.dynamic-highlights-settings .action-button.action-button-save {
+  align-self: center;
 }
 
-.is-mobile .dynamic-highlights-settings .setting-item-control button.pcr-button {
-  width: 2em;
-}
-body:not(.is-mobile) .dynamic-highlights-settings .action-button.action-button-add {
-  height: 2em;
-  width: 2.5em;
-}
-.dynamic-highlights-settings .checkbox-container {
-  min-width: 42px;
-}
+/* #endregion search term & save */
 
-button.action-button {
-  padding: 4px 14px;
-  border-radius: 6px;
-  height: fit-content;
-}
+/* #region settings tab -- mark types */
 
-button.action-button svg {
-  width: 1.3em;
-  height: 1.3em;
-  display: flex;
-}
-.highlighterplugin-setting-item .setting-item-control {
-  flex-wrap: wrap;
-}
-.highlighter-settings-color {
-  width: 20ch;
-}
-.highlighter-settings-value {
-  width: 12ch;
-  color: var(--text-normal);
-}
-.highlighter-settings-query {
-  flex-grow: 100;
-  width: 15ch;
-}
-.dynamic-highlights-settings .pickr {
-  display: flex;
-  margin-left: 4px;
-}
-.dynamic-highlights-settings .pickr .pcr-button {
-  height: 2em;
-}
-
-.dynamic-highlights-settings button.action-button {
-  height: 2.3rem;
+.dynamic-highlights-settings .mark-wrapper {
   display: grid;
-  place-content: center;
+  /* align-items: flex-end; */
+  width: 100%;
+  align-items: center;
+  grid-template-columns: repeat(10, auto);
 }
+
+.dynamic-highlights-settings .mark-wrapper .checkbox-container {
+  /* add spacing between toggle description and toggle button */
+  /* TODO: do this properly with grid spacing */
+  margin: 0px 18px 0 8px;
+}
+
+.is-mobile .dynamic-highlights-settings .mark-wrapper {
+  white-space: nowrap;
+  /* TODO: wrap all marker toggles in a container */
+  grid-template-columns: repeat(4, auto);
+}
+
+/* #endregion settings tab -- mark types */
+
+.dynamic-highlights-settings .group-wrapper {
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(2, auto);
+}
+
+/* #region custom css editor */
+
+/* .dynamic-highlights-settings .custom-css {
+  width: 100%;
+  height: 10em;
+} */
+
+.dynamic-highlights-settings .custom-css-wrapper {
+  flex-grow: 100;
+  text-align: left;
+  width: 100%;
+}
+
+.dynamic-highlights-settings .custom-css-wrapper .cm-editor {
+  background-color: var(--background-primary-alt);
+  max-height: 15em;
+  overflow: hidden;
+  resize: vertical;
+}
+
+.dynamic-highlights-settings .custom-css-wrapper .cm-editor[style*="height"] {
+  max-height: unset;
+}
+
+.dynamic-highlights-settings .custom-css-wrapper .cm-gutters {
+  background-color: var(--background-primary-alt);
+}
+
+.dynamic-highlights-settings .cm-line {
+  font-family: var(--font-monospace);
+}
+
+/* #region custom css editor */
+
+/* #region mobile specific styles */
+
+.is-mobile .setting-item-control button.action-button-save,
+.is-mobile .dynamic-highlights-settings .query-wrapper input {
+  width: unset;
+}
+
+.is-mobile .dynamic-highlights-settings .setting-item-control select,
+.is-mobile .dynamic-highlights-settings .setting-item-control input,
+.is-mobile .dynamic-highlights-settings .setting-item-control textarea,
+.is-mobile .dynamic-highlights-settings .setting-item-control button {
+  width: 100%;
+  margin: 0 4px;
+}
+
+/* #endregion mobile specific styles */
+
+/* #region persistent highlighter listing */
 
 .dynamic-highlights-settings .highlighter-container {
+  /* allow for copy and paste */
   user-select: text;
+  border-bottom: 1px solid var(--background-modifier-border);
 }
 
-.highlighter-container .highlighterplugin-setting-item {
+.dynamic-highlights-settings .highlighter-container .highlighter-details {
   display: flex;
+  padding: 18px 0 18px 0;
+  border-top: none;
 }
 
-.highlighter-container .highlighterplugin-setting-item .setting-item-control {
+.dynamic-highlights-settings .highlighter-container .highlighter-details .setting-item-control {
   flex-wrap: nowrap;
   flex-grow: 0;
 }
 
-.highlighterplugin-setting-item {
-  display: block;
-}
-
-.highlighterplugin-setting-item .setting-item-control {
-  justify-content: flex-start;
-  margin-top: 12px;
-  align-content: center;
-  align-items: flex-end;
-  grid-gap: 6px;
-}
-
-.highlighterplugin-setting-item
-  .modal.mod-settings
-  button:not(.mod-cta):not(.mod-warning).action-button.action-button-add,
-.highlighterplugin-setting-item button:not(.mod-cta):not(.mod-warning).action-button.action-button-add {
-  background-color: var(--interactive-accent);
-}
-
-.modal.mod-settings button:not(.mod-cta):not(.mod-warning).action-button.action-button-delete,
-button:not(.mod-cta):not(.mod-warning).action-button.action-button-delete {
-  background-color: #989cab;
-}
-
-.modal.mod-settings button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit,
-button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit {
-  background-color: #989cab;
-  color: white;
-}
-
-/**/
-.highlighter-setting-icon {
+.dynamic-highlights-settings .highlighter-setting-icon {
   display: flex;
   height: 24px;
   width: 24px;
 }
+
+/* #region selection highlighter settings */
+
+.dynamic-highlights-settings .ignored-words-input {
+  width: 25rem;
+  height: 10em;
+  resize: vertical;
+}
+
+/* #endregion selection highlighter settings */
+
+/* #region persistent highlighters sortable ui */
 
 .dynamic-highlights-settings .highlighter-item-draggable {
   cursor: initial;
@@ -171,57 +248,49 @@ button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit {
   cursor: grab;
 }
 
-.highlighter-container {
-  border-bottom: 1px solid var(--background-modifier-border);
-}
-
-.setting-item.highlighterplugin-setting-item:first-child {
-  padding-top: 18px;
-}
-
-.highlighterplugin-setting-item {
-  padding: 18px 0 18px 0;
-  border-top: none;
-}
-
-.highlighter-sortable-fallback {
+.dynamic-highlights-settings .highlighter-sortable-fallback {
   cursor: grabbing;
   box-shadow: 0px 3px 32px rgb(31 38 135 / 15%);
 }
 
-.highlighter-sortable-grab {
+.dynamic-highlights-settings .highlighter-sortable-grab {
   cursor: grabbing;
 }
 
-.highlighter-sortable-ghost {
+.dynamic-highlights-settings .highlighter-sortable-ghost {
   opacity: 0.4;
   cursor: grabbing;
 }
 
-.highlighter-sortable-chosen {
+.dynamic-highlights-settings .highlighter-sortable-chosen {
   cursor: grabbing;
   padding: 0 0 0 18px;
   background-color: var(--background-primary);
 }
 
-.highlighter-sortable-drag {
+.dynamic-highlights-settings .highlighter-sortable-drag {
   cursor: grabbing;
   box-shadow: 0px 3px 32px rgb(31 38 135 / 15%);
 }
 
-/* PICKR */
+/* #region persistent highlighters sortable ui */
 
+/* #endregion settings tab */
+
+/* #region pickr vendored styles */
 .pickr {
   position: relative;
   overflow: visible;
   transform: translateY(0);
 }
+
 .pickr * {
   box-sizing: border-box;
   outline: none;
   border: none;
   -webkit-appearance: none;
 }
+
 .pickr .pcr-button {
   position: relative;
   height: 2em;
@@ -235,6 +304,7 @@ button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit {
   background-size: 0;
   transition: all 0.3s;
 }
+
 .pickr .pcr-button::before {
   position: absolute;
   content: "";
@@ -247,9 +317,11 @@ button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit {
   border-radius: 0.15em;
   z-index: -1;
 }
+
 .pickr .pcr-button::before {
   z-index: initial;
 }
+
 .pickr .pcr-button::after {
   position: absolute;
   content: "";
@@ -261,18 +333,23 @@ button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit {
   background: var(--pcr-color);
   border-radius: 0.15em;
 }
+
 .pickr .pcr-button.clear {
   background-size: 70%;
 }
+
 .pickr .pcr-button.clear::before {
   opacity: 0;
 }
+
 .pickr .pcr-button.clear:focus {
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.85), 0 0 0 3px var(--pcr-color);
 }
+
 .pickr .pcr-button.disabled {
   cursor: not-allowed;
 }
+
 .pickr *,
 .pcr-app * {
   box-sizing: border-box;
@@ -280,6 +357,7 @@ button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit {
   border: none;
   -webkit-appearance: none;
 }
+
 .pickr input:focus,
 .pickr input.pcr-active,
 .pickr button:focus,
@@ -290,18 +368,21 @@ button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit {
 .pcr-app button.pcr-active {
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.85), 0 0 0 3px var(--pcr-color);
 }
+
 .pickr .pcr-palette,
 .pickr .pcr-slider,
 .pcr-app .pcr-palette,
 .pcr-app .pcr-slider {
   transition: box-shadow 0.3s;
 }
+
 .pickr .pcr-palette:focus,
 .pickr .pcr-slider:focus,
 .pcr-app .pcr-palette:focus,
 .pcr-app .pcr-slider:focus {
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.85), 0 0 0 3px rgba(0, 0, 0, 0.25);
 }
+
 .pcr-app {
   position: fixed;
   display: flex;
@@ -317,19 +398,23 @@ button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit {
   left: 0;
   top: 0;
 }
+
 .pcr-app.visible {
   transition: opacity 0.3s;
   visibility: visible;
   opacity: 1;
 }
+
 .pcr-app .pcr-swatches {
   display: flex;
   flex-wrap: wrap;
   margin-top: 0.75em;
 }
+
 .pcr-app .pcr-swatches.pcr-last {
   margin: 0;
 }
+
 @supports (display: grid) {
   .pcr-app .pcr-swatches {
     display: grid;
@@ -337,6 +422,7 @@ button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit {
     grid-template-columns: repeat(auto-fit, 1.75em);
   }
 }
+
 .pcr-app .pcr-swatches > button {
   font-size: 1em;
   position: relative;
@@ -352,6 +438,7 @@ button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit {
   background: transparent;
   z-index: 1;
 }
+
 .pcr-app .pcr-swatches > button::before {
   position: absolute;
   content: "";
@@ -364,6 +451,7 @@ button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit {
   border-radius: 0.15em;
   z-index: -1;
 }
+
 .pcr-app .pcr-swatches > button::after {
   content: "";
   position: absolute;
@@ -376,21 +464,26 @@ button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit {
   border-radius: 0.15em;
   box-sizing: border-box;
 }
+
 .pcr-app .pcr-swatches > button:hover {
   filter: brightness(1.05);
 }
+
 .pcr-app .pcr-swatches > button:not(.pcr-active) {
   box-shadow: none;
 }
+
 .pcr-app .pcr-interaction {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   margin: 0 -0.2em 0 -0.2em;
 }
+
 .pcr-app .pcr-interaction > * {
   margin: 0 0.2em;
 }
+
 .pcr-app .pcr-interaction input {
   letter-spacing: 0.07em;
   font-size: 0.75em;
@@ -403,12 +496,15 @@ button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit {
   padding: 0.45em 0.5em;
   margin-top: 0.75em;
 }
+
 .pcr-app .pcr-interaction input:hover {
   filter: brightness(0.975);
 }
+
 .pcr-app .pcr-interaction input:focus {
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.85), 0 0 0 3px rgba(66, 133, 244, 0.75);
 }
+
 .pcr-app .pcr-interaction .pcr-result {
   color: #75797e;
   text-align: left;
@@ -419,45 +515,55 @@ button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit {
   background: #f1f3f4;
   cursor: text;
 }
+
 .pcr-app .pcr-interaction .pcr-result::-moz-selection {
   background: #4285f4;
   color: #fff;
 }
+
 .pcr-app .pcr-interaction .pcr-result::selection {
   background: #4285f4;
   color: #fff;
 }
+
 .pcr-app .pcr-interaction .pcr-type.active {
   color: #fff;
   background: #4285f4;
 }
+
 .pcr-app .pcr-interaction .pcr-save,
 .pcr-app .pcr-interaction .pcr-cancel,
 .pcr-app .pcr-interaction .pcr-clear {
   color: #fff;
   width: auto;
 }
+
 .pcr-app .pcr-interaction .pcr-save,
 .pcr-app .pcr-interaction .pcr-cancel,
 .pcr-app .pcr-interaction .pcr-clear {
   color: #fff;
 }
+
 .pcr-app .pcr-interaction .pcr-save:hover,
 .pcr-app .pcr-interaction .pcr-cancel:hover,
 .pcr-app .pcr-interaction .pcr-clear:hover {
   filter: brightness(0.925);
 }
+
 .pcr-app .pcr-interaction .pcr-save {
   background: #4285f4;
 }
+
 .pcr-app .pcr-interaction .pcr-clear,
 .pcr-app .pcr-interaction .pcr-cancel {
   background: #f44250;
 }
+
 .pcr-app .pcr-interaction .pcr-clear:focus,
 .pcr-app .pcr-interaction .pcr-cancel:focus {
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.85), 0 0 0 3px rgba(244, 66, 80, 0.75);
 }
+
 .pcr-app .pcr-selection .pcr-picker {
   position: absolute;
   height: 18px;
@@ -469,6 +575,7 @@ button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit {
   -ms-user-select: none;
   user-select: none;
 }
+
 .pcr-app .pcr-selection .pcr-color-palette,
 .pcr-app .pcr-selection .pcr-color-chooser,
 .pcr-app .pcr-selection .pcr-color-opacity {
@@ -482,23 +589,28 @@ button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit {
   cursor: grab;
   cursor: -webkit-grab;
 }
+
 .pcr-app .pcr-selection .pcr-color-palette:active,
 .pcr-app .pcr-selection .pcr-color-chooser:active,
 .pcr-app .pcr-selection .pcr-color-opacity:active {
   cursor: grabbing;
   cursor: -webkit-grabbing;
 }
+
 .pcr-app[data-theme="nano"] {
   width: 14.25em;
   max-width: 95vw;
 }
+
 .pcr-app[data-theme="nano"] .pcr-swatches {
   margin-top: 0.6em;
   padding: 0 0.6em;
 }
+
 .pcr-app[data-theme="nano"] .pcr-interaction {
   padding: 0 0.6em 0.6em 0.6em;
 }
+
 .pcr-app[data-theme="nano"] .pcr-selection {
   display: grid;
   grid-gap: 0.6em;
@@ -509,6 +621,7 @@ button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit {
   width: 100%;
   align-self: flex-start;
 }
+
 .pcr-app[data-theme="nano"] .pcr-selection .pcr-color-preview {
   grid-area: 2 / 1 / 4 / 1;
   height: 100%;
@@ -518,9 +631,11 @@ button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit {
   justify-content: center;
   margin-left: 0.6em;
 }
+
 .pcr-app[data-theme="nano"] .pcr-selection .pcr-color-preview .pcr-last-color {
   display: none;
 }
+
 .pcr-app[data-theme="nano"] .pcr-selection .pcr-color-preview .pcr-current-color {
   position: relative;
   background: var(--pcr-color);
@@ -529,6 +644,7 @@ button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit {
   border-radius: 50em;
   overflow: hidden;
 }
+
 .pcr-app[data-theme="nano"] .pcr-selection .pcr-color-preview .pcr-current-color::before {
   position: absolute;
   content: "";
@@ -541,17 +657,20 @@ button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit {
   border-radius: 0.15em;
   z-index: -1;
 }
+
 .pcr-app[data-theme="nano"] .pcr-selection .pcr-color-palette {
   grid-area: 1 / 1 / 2 / 3;
   width: 100%;
   height: 100%;
   z-index: 1;
 }
+
 .pcr-app[data-theme="nano"] .pcr-selection .pcr-color-palette .pcr-palette {
   border-radius: 0.15em;
   width: 100%;
   height: 100%;
 }
+
 .pcr-app[data-theme="nano"] .pcr-selection .pcr-color-palette .pcr-palette::before {
   position: absolute;
   content: "";
@@ -564,32 +683,41 @@ button:not(.mod-cta):not(.mod-warning).action-button.action-button-edit {
   border-radius: 0.15em;
   z-index: -1;
 }
+
 .pcr-app[data-theme="nano"] .pcr-selection .pcr-color-chooser {
   grid-area: 2 / 2 / 2 / 2;
 }
+
 .pcr-app[data-theme="nano"] .pcr-selection .pcr-color-opacity {
   grid-area: 3 / 2 / 3 / 2;
 }
+
 .pcr-app[data-theme="nano"] .pcr-selection .pcr-color-chooser,
 .pcr-app[data-theme="nano"] .pcr-selection .pcr-color-opacity {
   height: 0.5em;
   margin: 0 0.6em;
 }
+
 .pcr-app[data-theme="nano"] .pcr-selection .pcr-color-chooser .pcr-picker,
 .pcr-app[data-theme="nano"] .pcr-selection .pcr-color-opacity .pcr-picker {
   top: 50%;
   transform: translateY(-50%);
 }
+
 .pcr-app[data-theme="nano"] .pcr-selection .pcr-color-chooser .pcr-slider,
 .pcr-app[data-theme="nano"] .pcr-selection .pcr-color-opacity .pcr-slider {
   flex-grow: 1;
   border-radius: 50em;
 }
+
 .pcr-app[data-theme="nano"] .pcr-selection .pcr-color-chooser .pcr-slider {
   background: linear-gradient(to right, red, #ff0, lime, cyan, blue, #f0f, red);
 }
+
 .pcr-app[data-theme="nano"] .pcr-selection .pcr-color-opacity .pcr-slider {
   background: linear-gradient(to right, transparent, black),
     url('data:image/svg+xml;utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2"><path fill="white" d="M1,0H2V1H1V0ZM0,1H1V2H0V1Z"/><path fill="gray" d="M0,0H1V1H0V0ZM1,1H2V2H1V1Z"/></svg>');
   background-size: 100%, 0.25em;
 }
+
+/* #endregion pickr vendored styles */
