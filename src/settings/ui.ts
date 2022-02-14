@@ -19,7 +19,7 @@ import DynamicHighlightsPlugin from "../main";
 import { ExportModal } from "./export";
 import { ImportModal } from "./import";
 import { markTypes } from "./settings";
-import {materialPalenight} from 'codemirror6-themes';
+import { materialPalenight } from "codemirror6-themes";
 
 export class SettingTab extends PluginSettingTab {
   plugin: DynamicHighlightsPlugin;
@@ -29,16 +29,16 @@ export class SettingTab extends PluginSettingTab {
   constructor(app: App, plugin: DynamicHighlightsPlugin) {
     super(app, plugin);
     this.plugin = plugin;
-    this.scope = new Scope(app.scope);
+    // this.scope = new Scope(app.scope);
   }
 
   hide() {
     this.editor?.destroy();
-    this.app.keymap.popScope(this.scope);
+    // this.app.keymap.popScope(this.scope);
   }
 
   display(): void {
-    this.app.keymap.pushScope(this.scope);
+    // this.app.keymap.pushScope(this.scope);
     const { containerEl } = this;
     containerEl.empty();
     const config = this.plugin.settings.staticHighlighter;
@@ -314,7 +314,6 @@ export class SettingTab extends PluginSettingTab {
             });
         });
     });
-
     let sortableEl = Sortable.create(highlightersContainer, {
       animation: 500,
       ghostClass: "highlighter-sortable-ghost",

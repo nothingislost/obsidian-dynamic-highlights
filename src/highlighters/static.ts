@@ -1,6 +1,6 @@
 // originally from: https://github.com/codemirror/search/blob/main/src/selection-match.ts
 import { syntaxTree } from "@codemirror/language";
-import { RegExpCursor, SearchCursor } from "@codemirror/search";
+import { SearchCursor } from "@codemirror/search";
 import { combineConfig, Compartment, Extension, Facet } from "@codemirror/state";
 import { tokenClassNodeProp } from "@codemirror/stream-parser";
 import {
@@ -11,16 +11,14 @@ import {
   Range,
   ViewPlugin,
   ViewUpdate,
-  WidgetType,
+  WidgetType
 } from "@codemirror/view";
 import { cloneDeep } from "lodash";
-import { requireApiVersion } from "obsidian";
 import type { RegExpExecArray } from "regexp-match-indices/types";
 import DynamicHighlightsPlugin from "src/main";
 import { SearchQueries } from "src/settings/settings";
 import { StyleSpec } from "style-mod";
-// get position indices for regex match groups
-require("regexp-match-indices/auto");
+import { RegExpCursor } from "./regexp-cursor";
 
 export type StaticHighlightOptions = {
   queries: SearchQueries;
@@ -71,7 +69,7 @@ class IconWidget extends WidgetType {
 
   constructor(className?: string) {
     super();
-    this.className = className
+    this.className = className;
   }
 
   toDOM() {
@@ -153,8 +151,8 @@ const staticHighlighter = ViewPlugin.fromClass(
               tokenDecos.push(markDeco.range(from, to));
             }
             if (query.mark?.contains("start") || query.mark?.contains("end")) {
-              let startDeco = Decoration.widget({widget: new IconWidget(query.class + "-start")});
-              let endDeco = Decoration.widget({widget: new IconWidget(query.class + "-end")});
+              let startDeco = Decoration.widget({ widget: new IconWidget(query.class + "-start") });
+              let endDeco = Decoration.widget({ widget: new IconWidget(query.class + "-end") });
               if (query.mark?.contains("start")) widgetDecos.push(startDeco.range(from, from));
               if (query.mark?.contains("end")) widgetDecos.push(endDeco.range(to, to));
             }
