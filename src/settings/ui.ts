@@ -20,7 +20,6 @@ import { ExportModal } from "./export";
 import { ImportModal } from "./import";
 import { markTypes } from "./settings";
 import { materialPalenight } from "codemirror6-themes";
-import { Coloris } from "@melloware/coloris";
 
 export class SettingTab extends PluginSettingTab {
   plugin: DynamicHighlightsPlugin;
