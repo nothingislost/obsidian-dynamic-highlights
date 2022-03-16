@@ -30,7 +30,7 @@ You can define as many unique highlighters as you'd like as long as the class na
 
 You can import the examples with the `Import` Button at the top right of the plugin's settings.
 
-##### Some Minor Visual Linting
+##### Visual Linting
 Highlights double spaces, empty list markers, double list markers, preceding spaces, and trailing spaces. 
 
 ```json
@@ -38,7 +38,7 @@ Highlights double spaces, empty list markers, double list markers, preceding spa
     "class": "Mini-Linting",
     "color": "#A70F0F38",
     "regex": true,
-    "query": "( {2,}(?!|)|- - |^\\s*- \\n|^ +(?![0-9-`])|[^ ] $)",
+    "query": "( {2,}(?!\|)|- - |^\\s*- \\n|^ +(?![0-9-`])|[^ ] $)",
     "mark": [
       "match"
     ],
@@ -62,7 +62,7 @@ Highlights double spaces, empty list markers, double list markers, preceding spa
 }
 ```
 
-##### Highlight Custom Styles for in Pandoc Exports (`:::`)
+##### Highlight Custom Styles in Pandoc Exports (`:::`)
 
 ```json
 {
@@ -79,7 +79,6 @@ Highlights double spaces, empty list markers, double list markers, preceding spa
   }
 }
 ```
-
 
 ### Settings
 
@@ -99,5 +98,5 @@ The default list can be found here: https://gist.github.com/sebleier/554280
 - Only strings with 3 or more characters will be highlighted in selection highlight mode
 
 ### Acknowledgments
-Thanks to @chrisgrieser for the plugin idea and feedback. 
+Thanks to @chrisgrieser aka @pseudometa for the plugin idea and feedback. 
 Thanks to @chetachiezikeuzor for the plugin settings UI code which was inspired by https://github.com/chetachiezikeuzor/highlightr-Plugin/
