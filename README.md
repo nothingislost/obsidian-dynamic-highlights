@@ -34,16 +34,18 @@ You can import the examples with the `Import` Button at the top right of the plu
 Highlights double spaces, empty list markers, double list markers, preceding spaces, and trailing spaces. 
 
 ```json
-"Mini-Linting": {
+{
+  "Mini-Linting": {
     "class": "Mini-Linting",
     "color": "#A70F0F38",
     "regex": true,
-    "query": "( {2,}(?!\|)|- - |^\\s*- \\n|^ +(?![0-9-`])|[^ ] $)",
+    "query": " {2,}(?!\\|| |$)|- - |^\\s*- \\n|^ +(?![0-9-`])",
     "mark": [
       "match"
     ],
-    "css": ".cm-active .Mini-Linting {\n  background: none;\n}"
+    "css": ".cm-line .Mini-Linting {\n  background: none;\n}\n\n.cm-line:not(.cm-active) .Mini-Linting {\n  outline: 1px solid var(--text-error);\n}"
   },
+}
 ```
 
 ##### Strike Out Filler Words to avoid in Writing
