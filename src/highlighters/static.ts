@@ -1,17 +1,14 @@
 // originally from: https://github.com/codemirror/search/blob/main/src/selection-match.ts
-import { syntaxTree } from "@codemirror/language";
 import { SearchCursor } from "@codemirror/search";
-import { combineConfig, Compartment, Extension, Facet } from "@codemirror/state";
-import { tokenClassNodeProp } from "@codemirror/stream-parser";
+import { combineConfig, Compartment, Extension, Facet, Range } from "@codemirror/state";
+import { syntaxTree, tokenClassNodeProp } from "@codemirror/language";
 import {
   Decoration,
   DecorationSet,
   EditorView,
-  PluginField,
-  Range,
   ViewPlugin,
   ViewUpdate,
-  WidgetType
+  WidgetType,
 } from "@codemirror/view";
 import { cloneDeep } from "lodash";
 import type { RegExpExecArray } from "regexp-match-indices/types";
@@ -137,7 +134,7 @@ const staticHighlighter = ViewPlugin.fromClass(
             let string = state.sliceDoc(from, to).trim();
             const linePos = view.state.doc.lineAt(from)?.from;
             let syntaxNode = syntaxTree(view.state).resolveInner(linePos + 1),
-              nodeProps: string = syntaxNode.type.prop(tokenClassNodeProp),
+              nodeProps = syntaxNode.type.prop(tokenClassNodeProp),
               excludedSection = ["hmd-codeblock", "hmd-frontmatter"].find(token =>
                 nodeProps?.split(" ").includes(token)
               );
@@ -193,13 +190,13 @@ const staticHighlighter = ViewPlugin.fromClass(
     }
   },
   {
-    provide: [
+    provide: plugin => [
       // these are separated out so that we can set decoration priority
       // it's also much easier to sort the decorations when they're grouped
-      PluginField.decorations.from(plugin => plugin.lineDecorations),
-      PluginField.decorations.from(plugin => plugin.groupDecorations),
-      PluginField.decorations.from(plugin => plugin.decorations),
-      PluginField.decorations.from(plugin => plugin.widgetDecorations),
+      EditorView.decorations.of(v => v.plugin(plugin)?.lineDecorations || Decoration.none),
+      EditorView.decorations.of(v => v.plugin(plugin)?.groupDecorations || Decoration.none),
+      EditorView.decorations.of(v => v.plugin(plugin)?.decorations || Decoration.none),
+      EditorView.decorations.of(v => v.plugin(plugin)?.widgetDecorations || Decoration.none),
     ],
   }
 );

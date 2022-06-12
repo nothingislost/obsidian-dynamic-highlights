@@ -45,6 +45,7 @@ esbuild
       "@codemirror/view",
       "@lezer/common",
       "@lezer/lr",
+      "@lezer/highlight",
       ...builtins,
     ],
     format: "cjs",

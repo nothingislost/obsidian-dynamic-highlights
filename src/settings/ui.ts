@@ -19,7 +19,8 @@ import DynamicHighlightsPlugin from "../main";
 import { ExportModal } from "./export";
 import { ImportModal } from "./import";
 import { markTypes } from "./settings";
-import { materialPalenight } from "codemirror6-themes";
+import { materialPalenight } from "../editor/theme-dark";
+import { basicLightTheme } from "../editor/theme-light";
 
 export class SettingTab extends PluginSettingTab {
   plugin: DynamicHighlightsPlugin;
@@ -100,7 +101,7 @@ export class SettingTab extends PluginSettingTab {
     const colorPicker = new ButtonComponent(colorWrapper);
 
     colorPicker.setClass("highlightr-color-picker").then(() => {
-      this.pickrInstance = pickrInstance = new Pickr({ 
+      this.pickrInstance = pickrInstance = new Pickr({
         el: colorPicker.buttonEl,
         container: colorWrapper,
         theme: "nano",
@@ -284,7 +285,11 @@ export class SettingTab extends PluginSettingTab {
               pickrInstance.setColor(options.color);
               queryTypeInput.setValue(options.regex);
               let extensions = basicSetup;
-              if (document.body.hasClass("theme-dark")) extensions.push(materialPalenight);
+              if (document.body.hasClass("theme-dark")) {
+                extensions.push(materialPalenight);
+              } else {
+                extensions.push(basicLightTheme);
+              }
               this.editor.setState(EditorState.create({ doc: options.css ? options.css : "", extensions: extensions }));
               if (options?.mark) {
                 Object.entries(marks).map(([key, value]) =>
