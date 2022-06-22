@@ -40,7 +40,7 @@ export const DEFAULT_SETTINGS: DynamicHighlightsSettings = {
     highlightSelectedText: true,
     maxMatches: 100,
     minSelectionLength: 3,
-    highlightDelay: 0,
+    highlightDelay: 200,
     ignoredWords: ignoredWords,
   },
   staticHighlighter: {

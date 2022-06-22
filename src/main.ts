@@ -17,6 +17,7 @@ export default class DynamicHighlightsPlugin extends Plugin {
   extensions: Extension[];
   styles: Extension;
   staticHighlighter: Extension;
+  selectionHighlighter: Extension;
   customCSS: Record<string, CustomCSS>;
   styleEl: HTMLElement;
   settingsTab: SettingTab;
@@ -27,7 +28,8 @@ export default class DynamicHighlightsPlugin extends Plugin {
     this.addSettingTab(this.settingsTab);
     addIcons();
     this.staticHighlighter = staticHighlighterExtension(this);
-    this.extensions = [highlightSelectionMatches(this.settings.selectionHighlighter)];
+    this.extensions = [];
+    this.updateSelectionHighlighter();
     this.updateStaticHighlighter();
     this.updateStyles();
     this.registerEditorExtension(this.extensions);
@@ -36,6 +38,10 @@ export default class DynamicHighlightsPlugin extends Plugin {
 
   async loadSettings() {
     this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+    if (this.settings.selectionHighlighter.highlightDelay < 200) {
+      this.settings.selectionHighlighter.highlightDelay = 200;
+      this.saveSettings;
+    }
   }
 
   async saveSettings() {
@@ -68,6 +74,13 @@ export default class DynamicHighlightsPlugin extends Plugin {
     this.extensions.remove(this.staticHighlighter);
     this.staticHighlighter = staticHighlighterExtension(this);
     this.extensions.push(this.staticHighlighter);
+    this.app.workspace.updateOptions();
+  }
+
+  updateSelectionHighlighter() {
+    this.extensions.remove(this.selectionHighlighter);
+    this.selectionHighlighter = highlightSelectionMatches(this.settings.selectionHighlighter)
+    this.extensions.push(this.selectionHighlighter);
     this.app.workspace.updateOptions();
   }
 

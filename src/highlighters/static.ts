@@ -2,14 +2,7 @@
 import { SearchCursor } from "@codemirror/search";
 import { combineConfig, Compartment, Extension, Facet, Range } from "@codemirror/state";
 import { syntaxTree, tokenClassNodeProp } from "@codemirror/language";
-import {
-  Decoration,
-  DecorationSet,
-  EditorView,
-  ViewPlugin,
-  ViewUpdate,
-  WidgetType,
-} from "@codemirror/view";
+import { Decoration, DecorationSet, EditorView, ViewPlugin, ViewUpdate, WidgetType } from "@codemirror/view";
 import { cloneDeep } from "lodash";
 import type { RegExpExecArray } from "regexp-match-indices/types";
 import DynamicHighlightsPlugin from "src/main";

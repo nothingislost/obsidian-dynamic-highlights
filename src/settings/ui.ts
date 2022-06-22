@@ -347,25 +347,26 @@ export class SettingTab extends PluginSettingTab {
       toggle.setValue(this.plugin.settings.selectionHighlighter.highlightWordAroundCursor).onChange(value => {
         this.plugin.settings.selectionHighlighter.highlightWordAroundCursor = value;
         this.plugin.saveSettings();
-        this.plugin.updateConfig("selection", this.plugin.settings.selectionHighlighter);
+        this.plugin.updateSelectionHighlighter();
       });
     });
     new Setting(containerEl).setName("Highlight all occurrences of the actively selected text").addToggle(toggle => {
       toggle.setValue(this.plugin.settings.selectionHighlighter.highlightSelectedText).onChange(value => {
         this.plugin.settings.selectionHighlighter.highlightSelectedText = value;
         this.plugin.saveSettings();
-        this.plugin.updateConfig("selection", this.plugin.settings.selectionHighlighter);
+        this.plugin.updateSelectionHighlighter();
       });
     });
     new Setting(containerEl)
       .setName("Highlight delay")
-      .setDesc("The delay, in milliseconds, before selection highlights will appear")
+      .setDesc("The delay, in milliseconds, before selection highlights will appear. Must be greater than 200ms.")
       .addText(text => {
         text.inputEl.type = "number";
         text.setValue(String(this.plugin.settings.selectionHighlighter.highlightDelay)).onChange(value => {
+          if (parseInt(value) < 200) value = "200";
           if (parseInt(value) >= 0) this.plugin.settings.selectionHighlighter.highlightDelay = parseInt(value);
           this.plugin.saveSettings();
-          this.plugin.updateConfig("selection", this.plugin.settings.selectionHighlighter);
+          this.plugin.updateSelectionHighlighter();
         });
       });
     new Setting(containerEl)
@@ -376,7 +377,7 @@ export class SettingTab extends PluginSettingTab {
         text.setValue(this.plugin.settings.selectionHighlighter.ignoredWords).onChange(async value => {
           this.plugin.settings.selectionHighlighter.ignoredWords = value;
           await this.plugin.saveSettings();
-          this.plugin.updateConfig("selection", this.plugin.settings.selectionHighlighter);
+          this.plugin.updateSelectionHighlighter();
         });
       });
   }

@@ -47,7 +47,7 @@ export const highlightCompartment = new Compartment();
 export function highlightSelectionMatches(options?: SelectionHighlightOptions): Extension {
   let ext: Extension[] = [matchHighlighter];
   if (options) {
-    ext.push(highlightCompartment.of(highlightConfig.of(cloneDeep(options))));
+    ext.push(highlightConfig.of(cloneDeep(options)));
   }
   return ext;
 }
@@ -69,7 +69,13 @@ const matchHighlighter = ViewPlugin.fromClass(
 
     update(update: ViewUpdate) {
       if (update.selectionSet || update.docChanged || update.viewportChanged) {
-        this.decorations = Decoration.none;
+        // don't immediately remove decorations to prevent issues with things like link clicking
+        // https://github.com/nothingislost/obsidian-dynamic-highlights/issues/58
+        setTimeout(() => {
+          this.decorations = Decoration.none;
+          update.view.update([]);
+        }, 150);
+        // this.decorations = Decoration.none;
         this.delayedGetDeco(update.view);
       }
     }
