@@ -102,7 +102,7 @@
   flex-grow: 100;
 }
 
-.dynamic-highlights-settings .query-wrapper input {
+.dynamic-highlights-settings .query-wrapper input:not([type="checkbox"]) {
   flex-grow: 100;
   width: 15ch;
 }
