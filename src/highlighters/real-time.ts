@@ -81,7 +81,9 @@ const searchHighlighter = ViewPlugin.fromClass(
             if (this.highlightDelay != conf.highlightDelay) this.updateDebouncer(view);
             if (!fileInfo.file) return Decoration.none;
 
-            let queries = conf.highlightQuery[fileInfo.file?.path];
+            let queries = conf.highlightQuery[fileInfo.file?.path] || [];
+
+            if (queries.length === 0) return Decoration.none;
 
             let deco = [];
             for (let part of view.visibleRanges) {
