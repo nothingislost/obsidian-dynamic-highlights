@@ -44,11 +44,13 @@ export function generateMenu(plugin: DynamicHighlightsPlugin, leaf: WorkspaceLea
     const menu = new Menu();
     let dom = menu.dom;
 
+    const stopPropagation = (evt: MouseEvent) => {
+        evt.stopPropagation();
+        evt.preventDefault();
+    };
+
     menu.addItem((item) => {
-        item.onClick(evt => {
-            evt.stopPropagation();
-            evt.preventDefault();
-        });
+        item.onClick(stopPropagation);
         dom = item.dom;
     });
     // Prevent the menu from closing when clicking on the title
@@ -57,7 +59,7 @@ export function generateMenu(plugin: DynamicHighlightsPlugin, leaf: WorkspaceLea
     };
 
     dom?.toggleClass(["dynamic-highlights-menu", "dynamic-highlights-search-filter"], true);
-    const path = (leaf.view as MarkdownView).file.path;
+    const path = (leaf.view as MarkdownView)?.file?.path;
     if (!path) return menu;
 
     const generateQueryUI = () => {
@@ -82,6 +84,18 @@ export function generateMenu(plugin: DynamicHighlightsPlugin, leaf: WorkspaceLea
     return menu;
 }
 
+function createComponent<T extends ColorComponent | TextComponent | ExtraButtonComponent>(
+    ComponentClass: new (el: HTMLElement) => T, 
+    el: HTMLElement, 
+    setValue: (component: T) => void, 
+    setEvent: (component: T) => void
+  ) {
+    const component = new ComponentClass(el);
+    setValue(component);
+    setEvent(component);
+    return component;
+  }
+
 
 function generateColorSelectorSettings({
                                            dom, plugin, path, query, queryMap, id, generateQueryUI
@@ -96,48 +110,59 @@ function generateColorSelectorSettings({
     generateQueryUI: () => void;
 }) {
     const el = dom.createEl('div', {cls: 'dynamic-highlights-search-filter__query'});
-    const colorEl = el.createEl('div', {cls: 'query-color-picker'});
-    const textEl = el.createEl('div', {cls: 'query-text'});
-    const deleteEl = el.createEl('div', {cls: 'query-delete'});
 
-    // Generate components (color picker)
-    const colorComponent = new ColorComponent(colorEl);
-    colorComponent.colorPickerEl.onclick = (evt) => {
-        evt.stopPropagation();
-    };
-    colorComponent.setValue(query.colorStr);
-    colorComponent.onChange(async (value: string) => {
-        updateQuery(plugin, {
-            path, query, queryMap, type: 'colorStr', value
-        });
-    });
-
-    // Generate components (text input)
-    const textComponent = new TextComponent(textEl);
-    textComponent.inputEl.onclick = (evt) => {
-        evt.stopPropagation();
-        setTimeout(() => {
-            textComponent.inputEl.focus();
-        }, 10);
-    };
-    textComponent.setValue(query.queryStr);
-    textComponent.onChange(async (value) => {
-        updateQuery(plugin, {
-            path, query, queryMap, type: 'queryStr', value
-        });
-    });
-
-    // Generate components (delete button)
-    const buttonComponent = new ExtraButtonComponent(deleteEl);
-    buttonComponent.onClick(() => {
-        deleteQuery(plugin, {
-            path, id, queryMap
-        });
-        setTimeout(() => {
-            generateQueryUI();
-        }, 400);
-    });
-    buttonComponent.setIcon('trash');
+    createComponent(
+        ColorComponent, 
+        el.createEl('div', {cls: 'query-color-picker'}), 
+        component => component.setValue(query.colorStr), 
+        component => {
+          component.colorPickerEl.onclick = (evt) => {
+            evt.stopPropagation();
+          };
+          component.onChange(async (value: string) => {
+            updateQuery(plugin, {
+              path, query, queryMap, type: 'colorStr', value
+            });
+          });
+        }
+      );
+      
+      // Generate components (text input)
+    createComponent(
+        TextComponent, 
+        el.createEl('div', {cls: 'query-text'}), 
+        component => component.setValue(query.queryStr), 
+        component => {
+          component.inputEl.onclick = (evt) => {
+            evt.stopPropagation();
+            setTimeout(() => {
+              component.inputEl.focus();
+            }, 10);
+          };
+          component.onChange(async (value) => {
+            updateQuery(plugin, {
+              path, query, queryMap, type: 'queryStr', value
+            });
+          });
+        }
+      );
+      
+      // Generate components (delete button)
+    createComponent(
+        ExtraButtonComponent, 
+        el.createEl('div', {cls: 'query-delete'}), 
+        component => component.setIcon('trash'), 
+        component => {
+          component.onClick(() => {
+            deleteQuery(plugin, {
+              path, id, queryMap
+            });
+            setTimeout(() => {
+              generateQueryUI();
+            }, 400);
+          });
+        }
+      );
 }
 
 

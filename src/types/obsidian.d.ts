@@ -5,7 +5,20 @@ declare module "obsidian" {
         updateOptions(): void;
     }
 
+    export interface WorkspaceLeaf {
+        id: string;
+    }
+
     export interface Menu {
         dom: HTMLElement;
+        select(): void;
+    }
+
+    export interface MenuItem {
+        dom: HTMLElement;
+    }
+
+    export interface ColorComponent {
+        colorPickerEl: HTMLElement;
     }
 }
