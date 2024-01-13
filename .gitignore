@@ -1,5 +1,5 @@
 # vscode
-.vscode 
+.vscode
 
 # Intellij
 *.iml
@@ -8,6 +8,7 @@
 # npm
 node_modules
 package-lock.json
+pnpm-lock.yaml
 
 # Don't include the compiled main.js file in the repo.
 # They should be uploaded to GitHub releases instead.
